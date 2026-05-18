@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>홈페이지</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #667eea;
+    --secondary: #764ba2;
+    --dark: #2d3748;
+    --gray: #718096;
+    --light: #f7fafc;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; color: var(--dark); }
+
+  /* ── 네비게이션 ── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 1px 12px rgba(0,0,0,0.08);
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 60px; height: 64px;
+  }
+  .nav-logo { font-size: 1.2rem; font-weight: 700; color: var(--primary); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--gray);
+    font-size: 0.95rem; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--primary); }
+
+  /* ── 히어로 ── */
+  #hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center; padding: 100px 20px 60px;
+    position: relative; overflow: hidden;
+  }
+  #hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .avatar {
+    width: 130px; height: 130px; border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    border: 4px solid rgba(255,255,255,0.6);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem; margin-bottom: 24px;
+    position: relative;
+  }
+  .hero-name {
+    font-size: 3rem; font-weight: 800; color: white;
+    margin-bottom: 12px; position: relative;
+  }
+  .hero-role {
+    font-size: 1.2rem; color: rgba(255,255,255,0.85);
+    margin-bottom: 20px; position: relative;
+  }
+  .hero-desc {
+    font-size: 1rem; color: rgba(255,255,255,0.75);
+    max-width: 480px; line-height: 1.8; position: relative;
+  }
+  .hero-btns { display: flex; gap: 14px; margin-top: 36px; position: relative; }
+  .btn {
+    padding: 13px 30px; border-radius: 30px; font-size: 0.95rem;
+    font-weight: 600; text-decoration: none; cursor: pointer;
+    border: none; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+  .btn-white { background: white; color: var(--primary); }
+  .btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.7); }
+  .scroll-down {
+    position: absolute; bottom: 30px;
+    color: rgba(255,255,255,0.6); font-size: 0.85rem;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+
+  /* ── 섹션 공통 ── */
+  section { padding: 90px 20px; }
+  .container { max-width: 860px; margin: 0 auto; }
+  .section-title {
+    font-size: 2rem; font-weight: 800; text-align: center;
+    margin-bottom: 10px; color: var(--dark);
+  }
+  .section-sub {
+    text-align: center; color: var(--gray); margin-bottom: 52px;
+    font-size: 1rem;
+  }
+  .divider {
+    width: 50px; height: 4px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    margin: 12px auto 48px;
+  }
+
+  /* ── 소개 ── */
+  #about { background: var(--light); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+  .about-img {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 20px; height: 280px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 5rem;
+  }
+  .about-text h3 { font-size: 1.4rem; margin-bottom: 14px; color: var(--dark); }
+  .about-text p { color: var(--gray); line-height: 1.9; margin-bottom: 14px; font-size: 0.97rem; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .tag {
+    background: white; border: 1px solid #e2e8f0;
+    padding: 6px 14px; border-radius: 20px;
+    font-size: 0.85rem; color: var(--primary); font-weight: 600;
+  }
+
+  /* ── 역량 ── */
+  #skills { background: white; }
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .skill-card {
+    background: var(--light); border-radius: 16px;
+    padding: 28px 24px; text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid #e2e8f0;
+  }
+  .skill-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+  .skill-icon { font-size: 2.4rem; margin-bottom: 14px; }
+  .skill-name { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: var(--dark); }
+  .skill-desc { font-size: 0.87rem; color: var(--gray); line-height: 1.6; }
+
+  /* ── 연락처 ── */
+  #contact {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    text-align: center; color: white;
+  }
+  #contact .section-title { color: white; }
+  #contact .section-sub { color: rgba(255,255,255,0.8); margin-bottom: 0; }
+  #contact .divider { background: rgba(255,255,255,0.4); }
+  .contact-cards { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 40px; }
+  .contact-card {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 16px; padding: 24px 30px;
+    text-decoration: none; color: white;
+    transition: background 0.2s, transform 0.2s;
+    min-width: 160px;
+  }
+  .contact-card:hover { background: rgba(255,255,255,0.25); transform: translateY(-3px); }
+  .contact-card .icon { font-size: 1.8rem; margin-bottom: 10px; }
+  .contact-card .label { font-size: 0.8rem; opacity: 0.8; margin-bottom: 4px; }
+  .contact-card .value { font-size: 0.95rem; font-weight: 600; }
+
+  /* ── 푸터 ── */
+  footer {
+    background: var(--dark); color: rgba(255,255,255,0.5);
+    text-align: center; padding: 24px;
+    font-size: 0.87rem;
+  }
+
+  /* ── 반응형 ── */
+  @media (max-width: 640px) {
+    nav { padding: 0 20px; }
+    .nav-links { gap: 16px; }
+    .hero-name { font-size: 2rem; }
+    .about-grid { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+    .about-img { display: none; }
+  }
+
+  /* ── 스크롤 애니메이션 ── */
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- 네비게이션 -->
+<nav>
+  <div class="nav-logo">MY PAGE</div>
+  <ul class="nav-links">
+    <li><a href="#hero">홈</a></li>
+    <li><a href="#about">소개</a></li>
+    <li><a href="#skills">역량</a></li>
+    <li><a href="#contact">연락처</a></li>
+  </ul>
+</nav>
+
+<!-- 히어로 -->
+<section id="hero">
+  <div class="avatar">😊</div>
+  <h1 class="hero-name">홍길동</h1>
+  <p class="hero-role">정책지원관 · 달서구의회</p>
+  <p class="hero-desc">
+    의원들의 의정활동을 지원하며<br>
+    더 나은 지역사회를 만들어갑니다.
+  </p>
+  <div class="hero-btns">
+    <a href="#about" class="btn btn-white">더 알아보기</a>
+    <a href="#contact" class="btn btn-outline">연락하기</a>
+  </div>
+  <div class="scroll-down">
+    <span>스크롤</span>
+    <span>▼</span>
+  </div>
+</section>
+
+<!-- 소개 -->
+<section id="about">
+  <div class="container fade-up">
+    <h2 class="section-title">About Me</h2>
+    <div class="divider"></div>
+    <div class="about-grid">
+      <div class="about-img">🏛️</div>
+      <div class="about-text">
+        <h3>안녕하세요, 저는 홍길동입니다.</h3>
+        <p>
+          달서구의회 정책지원팀에서 근무하며
+          의정활동참고자료 조사, 조례 검토, 연구단체 운영 등
+          다양한 의정활동 지원 업무를 담당하고 있습니다.
+        </p>
+        <p>
+          데이터 분석과 파이썬 프로그래밍을 활용해
+          업무 효율을 높이는 데 관심이 많습니다.
+        </p>
+        <div class="tags">
+          <span class="tag">정책분석</span>
+          <span class="tag">조례검토</span>
+          <span class="tag">데이터분석</span>
+          <span class="tag">Python</span>
+          <span class="tag">지방의회</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 역량 -->
+<section id="skills">
+  <div class="container fade-up">
+    <h2 class="section-title">Skills</h2>
+    <p class="section-sub">주요 역량과 관심 분야</p>
+    <div class="divider"></div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-icon">📋</div>
+        <div class="skill-name">의정활동 지원</div>
+        <div class="skill-desc">조례 검토, 서면질문, 5분자유발언, 구정질문 등 의정활동 전반 지원</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🔍</div>
+        <div class="skill-name">정책 조사·분석</div>
+        <div class="skill-desc">의정활동참고자료 조사 및 타 지자체 사례 분석</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🐍</div>
+        <div class="skill-name">Python 프로그래밍</div>
+        <div class="skill-desc">웹 크롤링, 데이터 분석, 업무 자동화</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">📊</div>
+        <div class="skill-name">데이터 분석</div>
+        <div class="skill-desc">Excel, openpyxl을 활용한 성과 집계 및 보고서 작성</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🏛️</div>
+        <div class="skill-name">지방자치법</div>
+        <div class="skill-desc">조례 입안, 법령 검토, 의회 운영 규정 이해</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🤝</div>
+        <div class="skill-name">소통·협력</div>
+        <div class="skill-desc">의원, 집행부, 연구기관 등 다양한 이해관계자와의 협력</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 연락처 -->
+<section id="contact">
+  <div class="container fade-up">
+    <h2 class="section-title">Contact</h2>
+    <p class="section-sub">언제든지 연락주세요</p>
+    <div class="divider"></div>
+    <div class="contact-cards">
+      <a class="contact-card" href="mailto:example@korea.kr">
+        <div class="icon">📧</div>
+        <div class="label">이메일</div>
+        <div class="value">example@korea.kr</div>
+      </a>
+      <a class="contact-card" href="#">
+        <div class="icon">📞</div>
+        <div class="label">전화</div>
+        <div class="value">053-000-0000</div>
+      </a>
+      <a class="contact-card" href="#">
+        <div class="icon">🏢</div>
+        <div class="label">소속</div>
+        <div class="value">달서구의회</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 푸터 -->
+<footer>
+  <p>© 2026 홍길동. All rights reserved.</p>
+</footer>
+
+<script>
+  // 스크롤 페이드인 애니메이션
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
